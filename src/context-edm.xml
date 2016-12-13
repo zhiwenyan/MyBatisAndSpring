@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<!--LEON新增每周XMTX微信E化报表 -->
+	<bean id="loadXMTXWechatReportList"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+		depends-on="reportService">
+		<property name="targetObject" ref="reportService" />
+		<property name="targetMethod" value="sendXMTXWechatReport" />
+	</bean>
+	<bean id="loadXMTXWechatReportTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="loadXMTXWechatReportList" />
+		<property name="cronExpression" value="00 00 17 ? * Thu" />
+	</bean>
+</beans>
